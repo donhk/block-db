@@ -24,3 +24,16 @@ impl fmt::Display for Cmd {
         }
     }
 }
+
+impl Cmd {
+    pub fn emoji(&self) -> &str {
+        match self {
+            Cmd::LS => emojis::get("🗺️").unwrap().as_str(),
+            Cmd::EXIT => emojis::get("🕳️").unwrap().as_str(),
+            Cmd::CONNECT => emojis::get("🕸️").unwrap().as_str(),
+            Cmd::PUT => emojis::get("🦄").unwrap().as_str(),
+            Cmd::GET => emojis::get("🐖").unwrap().as_str(),
+            Cmd::HELP => emojis::get("🤪").unwrap().as_str(),
+        }
+    }
+}

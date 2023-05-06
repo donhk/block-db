@@ -1,0 +1,15 @@
+syntax = "proto3";
+package network;
+
+service FileTransfer  {
+  rpc SendMessage (MessageRequest) returns (MessageResponse);
+}
+
+message MessageRequest {
+  bytes payload = 1;
+}
+
+message MessageResponse {
+  bool   successful = 1;
+  string message_id = 2;
+}
