@@ -9,5 +9,6 @@ This repo contains a client server app that allows storing documents into a data
 ### Compilation
 
 ```bash
-cargo build
+cd cli_client
+cargo run
 ```
