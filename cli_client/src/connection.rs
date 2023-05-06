@@ -1,6 +1,7 @@
 use tokio::runtime::Runtime;
 use network::file_transfer_client::FileTransferClient;
 use crate::app_state::client_state;
+use colored::*;
 
 pub mod network {
     tonic::include_proto!("network");
@@ -11,7 +12,7 @@ pub mod network {
 /// # Arguments
 /// * `url` a url to connect
 pub fn connect(url: &str) {
-    let url_parts = url.split(' ').collect::<Vec<&str>>();
+    let url_parts = url.split_whitespace().collect::<Vec<&str>>();
     if url_parts.get(1).is_none() {
         println!("Provide a server!");
         return;
@@ -22,7 +23,7 @@ pub fn connect(url: &str) {
     let client = FileTransferClient::connect(server.to_string());
     let result = rt.block_on(client);
     if result.is_err() {
-        println!("Problem connecting to '{}'", server);
+        println!("{} '{}'", "Problem connecting to".red(), server);
         return;
     }
     client_state::set_client_conn(result.unwrap());
