@@ -2,7 +2,8 @@ use std::io::{self, Write};
 use crate::cmds::Cmd;
 use crate::help_cmd::print_help;
 use colored::*;
-use crate::connection::connect;
+use crate::connect_cmd::connect;
+use crate::status_cmd::print_status;
 
 pub fn start_terminal() {
     let bulb = emojis::get("💡").unwrap();
@@ -33,6 +34,9 @@ pub fn start_terminal() {
             }
             s if s.starts_with(Cmd::HELP.to_string().as_str()) => {
                 print_help();
+            }
+            s if s.starts_with(Cmd::STATUS.to_string().as_str()) => {
+                print_status();
             }
             _ => {
                 let bomb = emojis::get("💣").unwrap();

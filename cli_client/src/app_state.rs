@@ -1,7 +1,7 @@
 #[allow(dead_code)]
 pub mod client_state {
     use tonic::transport::Channel;
-    use crate::connection::network::file_transfer_client::FileTransferClient;
+    use crate::connect_cmd::network::file_transfer_client::FileTransferClient;
 
     // private static mutable variable
     static mut CLIENT_CONN: Option<FileTransferClient<Channel>> = None;
