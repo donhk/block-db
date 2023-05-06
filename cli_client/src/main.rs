@@ -1,10 +1,17 @@
 mod terminal;
-mod help_cmd;
-mod cmds;
-mod connect_cmd;
+
+mod cli {
+    pub mod cmds;
+
+    pub(crate) mod commands {
+        pub mod help_cmd;
+        pub mod connect_cmd;
+        pub mod status_cmd;
+        pub mod cd_cmd;
+    }
+}
+
 mod app_state;
-mod status_cmd;
-mod cd_cmd;
 
 use terminal::start_terminal;
 use crate::terminal::init_app;

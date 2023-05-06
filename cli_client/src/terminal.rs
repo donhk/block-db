@@ -1,12 +1,12 @@
 use std::io::{self, Write};
-use crate::cmds::Cmd;
-use crate::help_cmd::print_help;
+use crate::cli::commands::help_cmd::print_help;
+use crate::cli::commands::connect_cmd::connect;
+use crate::cli::commands::status_cmd::print_status;
+use crate::cli::commands::cd_cmd::change_dir;
 use colored::*;
-use crate::cd_cmd::change_dir;
-use crate::connect_cmd::connect;
-use crate::status_cmd::print_status;
 use crate::app_state::client_state;
 use std::env;
+use crate::cli::cmds::Cmd;
 
 pub fn init_app() {
     let workspace = env::current_dir().unwrap().display().to_string();

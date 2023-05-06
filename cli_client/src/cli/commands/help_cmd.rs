@@ -1,6 +1,6 @@
 use colored::Colorize;
 use strum::IntoEnumIterator;
-use crate::cmds::Cmd;
+use crate::cli::cmds::Cmd;
 
 pub fn print_help() {
     for cmd in Cmd::iter() {
