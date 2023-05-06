@@ -1,5 +1,4 @@
-use std::{io};
-use std::io::Write;
+use std::io::{self, Write};
 use crate::cmds::Cmd;
 use crate::help_cmd::print_help;
 
