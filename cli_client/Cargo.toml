@@ -8,3 +8,5 @@ edition = "2021"
 [dependencies]
 strum = "0.17.1"
 strum_macros = "0.17.1"
+colored = "2"
+emojis = "0.6.0"
