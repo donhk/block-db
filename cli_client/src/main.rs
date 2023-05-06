@@ -6,7 +6,7 @@ mod terminal;
 mod help_cmd;
 mod cmds;
 mod connection;
-mod client_state;
+mod app_state;
 
 use terminal::start_terminal;
 
