@@ -3,8 +3,8 @@ use colored::*;
 
 pub fn print_status() {
     let conn_state = match client_state::get_client_conn().is_none() {
-        true => "Yes".green(),
-        false => "No".red(),
+        true => "No".red(),
+        false => "Yes".green(),
     };
     let workspace = match client_state::get_location().is_none() {
         true => "Unknown".red(),

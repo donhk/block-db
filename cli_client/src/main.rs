@@ -1,7 +1,3 @@
-pub mod payments {
-    tonic::include_proto!("network");
-}
-
 mod terminal;
 mod help_cmd;
 mod cmds;
