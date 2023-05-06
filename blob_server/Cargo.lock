@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "store-db"
+name = "blob_server"
 version = "0.1.0"
