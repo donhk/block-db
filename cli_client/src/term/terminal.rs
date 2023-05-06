@@ -7,6 +7,9 @@ use colored::*;
 use crate::utils::app_state::client_state;
 use std::env;
 use crate::cli::cmds::Cmd;
+use crate::cli::commands::get_cmd::download_file;
+use crate::cli::commands::list_cmd::list;
+use crate::cli::commands::put_cmd::upload_file;
 
 pub fn init_app() {
     let workspace = env::current_dir().unwrap().display().to_string();
@@ -32,13 +35,13 @@ pub fn start_terminal() {
                 connect(&cmd);
             }
             s if s.starts_with(Cmd::PUT.to_string().as_str()) => {
-                println!("Uploading file");
+                upload_file(&cmd);
             }
             s if s.starts_with(Cmd::GET.to_string().as_str()) => {
-                println!("Downloading file");
+                download_file(&cmd);
             }
             s if s.starts_with(Cmd::LS.to_string().as_str()) => {
-                println!("Listing file");
+                list();
             }
             s if s.starts_with(Cmd::HELP.to_string().as_str()) => {
                 print_help();

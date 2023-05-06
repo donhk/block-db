@@ -1,4 +1,6 @@
-mod terminal;
+mod term {
+    pub mod terminal;
+}
 
 mod cli {
     pub mod cmds;
@@ -10,6 +12,7 @@ mod cli {
         pub mod cd_cmd;
         pub mod put_cmd;
         pub mod get_cmd;
+        pub mod list_cmd;
     }
 }
 
@@ -17,8 +20,8 @@ mod utils {
     pub mod app_state;
 }
 
-use terminal::start_terminal;
-use crate::terminal::init_app;
+use crate::term::terminal::start_terminal;
+use crate::term::terminal::init_app;
 
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
