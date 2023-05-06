@@ -6,5 +6,10 @@ pub fn print_status() {
         true => "Yes".green(),
         false => "No".red(),
     };
-    println!("Connected: {}", conn_state)
+    let workspace = match client_state::get_location().is_none() {
+        true => "Unknown".red(),
+        false => client_state::get_location().as_ref().unwrap().green(),
+    };
+    println!("Connected: {}", conn_state);
+    println!("workspace: {}", workspace);
 }

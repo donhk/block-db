@@ -11,6 +11,7 @@ pub enum Cmd {
     GET,
     HELP,
     STATUS,
+    CD,
 }
 
 impl fmt::Display for Cmd {
@@ -23,6 +24,7 @@ impl fmt::Display for Cmd {
             Cmd::GET => write!(f, "get"),
             Cmd::HELP => write!(f, "help"),
             Cmd::STATUS => write!(f, "status"),
+            Cmd::CD => write!(f, "cd"),
         }
     }
 }
@@ -37,6 +39,7 @@ impl Cmd {
             Cmd::GET => emojis::get("🐖").unwrap().as_str(),
             Cmd::HELP => emojis::get("🤪").unwrap().as_str(),
             Cmd::STATUS => emojis::get("🤓").unwrap().as_str(),
+            Cmd::CD => emojis::get("🍇").unwrap().as_str(),
         }
     }
 }
