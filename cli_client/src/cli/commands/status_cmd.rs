@@ -1,4 +1,4 @@
-use crate::app_state::client_state;
+use crate::utils::app_state::client_state;
 use colored::*;
 
 pub fn print_status() {

@@ -8,10 +8,14 @@ mod cli {
         pub mod connect_cmd;
         pub mod status_cmd;
         pub mod cd_cmd;
+        pub mod put_cmd;
+        pub mod get_cmd;
     }
 }
 
-mod app_state;
+mod utils {
+    pub mod app_state;
+}
 
 use terminal::start_terminal;
 use crate::terminal::init_app;

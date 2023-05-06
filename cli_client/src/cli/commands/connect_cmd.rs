@@ -1,6 +1,6 @@
 use tokio::runtime::Runtime;
 use network::file_transfer_client::FileTransferClient;
-use crate::app_state::client_state;
+use crate::utils::app_state::client_state;
 use colored::*;
 
 pub mod network {

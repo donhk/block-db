@@ -4,7 +4,7 @@ use crate::cli::commands::connect_cmd::connect;
 use crate::cli::commands::status_cmd::print_status;
 use crate::cli::commands::cd_cmd::change_dir;
 use colored::*;
-use crate::app_state::client_state;
+use crate::utils::app_state::client_state;
 use std::env;
 use crate::cli::cmds::Cmd;
 
