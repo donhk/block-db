@@ -28,7 +28,7 @@ impl FileTransfer for FileTransferService {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let addr = "[::1]:8089".parse()?;
+    let addr = "[::1]:3000".parse()?;
     let transfer_service = FileTransferService::default();
     Server::builder().add_service(FileTransferServer::new(transfer_service))
         .serve(addr)
