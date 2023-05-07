@@ -1,5 +1,5 @@
-use tonic::transport::Channel;
 use tokio::runtime::Runtime;
+use tonic::transport::Channel;
 use crate::network::file_transfer_client::FileTransferClient;
 use crate::network::MessageRequest;
 use crate::utils::app_state::client_state;
@@ -12,8 +12,7 @@ fn send_data(bytes: Vec<u8>, client: &mut FileTransferClient<Channel>) {
         }
     );
     let response = client.send_message(request);
-    let rt = Runtime::new().unwrap();
-    let result = rt.block_on(response);
+    let result = Runtime::new().unwrap().block_on(response);
     println!("RESPONSE={:?}", result);
 }
 
@@ -42,7 +41,7 @@ pub fn upload_file(raw_cmd: &str) {
             println!("Error reading chunk {}", chunk_index);
             return;
         }
-        send_data(chunk.unwrap(), &mut client);
+        let _ = send_data(chunk.unwrap(), &mut client);
     }
 }
 

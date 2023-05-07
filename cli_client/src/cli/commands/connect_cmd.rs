@@ -16,9 +16,8 @@ pub fn connect(url: &str) {
     }
     let server = url_parts.get(1).unwrap();
     println!("{} '{}'", "Connecting to server".blue(), server);
-    let rt = Runtime::new().unwrap();
-    let client = FileTransferClient::connect(server.to_string());
-    let result = rt.block_on(client);
+    let conn_req = FileTransferClient::connect(server.to_string());
+    let result = Runtime::new().unwrap().block_on(conn_req);
     if result.is_err() {
         println!("{} '{}'", "Problem connecting to".red(), server);
         return;
