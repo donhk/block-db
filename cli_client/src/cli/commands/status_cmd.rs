@@ -19,6 +19,6 @@ pub fn print_status() {
     for (k, v) in documents_db::get_map().unwrap().iter() {
         let key = k.clone();
         let value = v.clone();
-        println!("{}: {} -> {}", value.hash, key, value.chunks.len())
+        println!("parity: {} hash: {} name: {} chunks: {}", value.parity_chunks, value.hash, key, value.chunks.len())
     }
 }

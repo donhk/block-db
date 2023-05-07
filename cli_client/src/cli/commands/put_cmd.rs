@@ -29,7 +29,7 @@ pub fn upload_file(raw_cmd: &str) {
     // use 1MB chunk size
     let chunk_size: usize = 1024 * 1024;
     let number_of_chunks = get_num_chunks(file_location, chunk_size);
-    let parity = 2;
+    let parity = std::cmp::max(2, number_of_chunks / 3);
     //define shards and parity shards
     let r = ReedSolomon::new(number_of_chunks, parity).unwrap();
     //master copy
@@ -76,6 +76,7 @@ pub fn upload_file(raw_cmd: &str) {
         hash,
         message_ids,
         all_bytes_read,
+        parity,
     ));
     println!("{} {}ms", "Saved".blue(), duration.as_millis().to_string().purple());
 }

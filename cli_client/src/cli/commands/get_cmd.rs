@@ -1,5 +1,6 @@
 use std::fs::File;
 use std::io::Write;
+use std::time::SystemTime;
 use colored::Colorize;
 use crate::db::files_db::documents_db;
 use crate::network::file_transfer_client::FileTransferClient;
@@ -24,7 +25,9 @@ pub fn download_file(raw_cmd: &str) {
     }
     let document = doc.unwrap();
 
-    let parity = 2;
+    let start = SystemTime::now();
+
+    let parity = document.parity_chunks;
     let number_of_chunks = document.chunks.len() - parity;
     //define shards and parity shards
     let r = ReedSolomon::new(number_of_chunks, parity).unwrap();
@@ -34,7 +37,10 @@ pub fn download_file(raw_cmd: &str) {
         tokio::runtime::Runtime::new().unwrap().block_on(async {
             let response = get_data(chunk_id.clone()).await;
             if !response.successful {
-                println!("Missing chunk: {}", chunk_index);
+                let message: String = "Missing chunk ".to_string() +
+                    chunk_index.to_string().as_str() + &*" of ".to_string() +
+                    document.bytes_read.get(chunk_index).unwrap().to_string().as_str() + " bytes";
+                println!("{}", message.red());
                 shards.push(None);
             } else {
                 shards.push(Some(response.payload));
@@ -51,12 +57,16 @@ pub fn download_file(raw_cmd: &str) {
         let mut bytes = shard.unwrap();
         let num_of_bytes = document.bytes_read.get(id).unwrap();
         bytes.resize(*num_of_bytes, 0);
-        println!("Getting {} size {} bytes", id, bytes.len());
         file.write(&bytes).expect("Error writing file");
     }
     let new_hash = hash_file(target_file).unwrap();
+    let end = SystemTime::now();
+    let duration = end.duration_since(start)
+        .unwrap_or_else(|e| e.duration());
     if document.hash != new_hash {
         println!("{} original: {} new: {}", "The file is corrupted".red(), document.hash, new_hash);
+    } else {
+        println!("{} {}ms", "Done".green(), duration.as_millis());
     }
 }
 

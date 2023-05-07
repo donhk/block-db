@@ -4,15 +4,17 @@ pub struct Document {
     pub(crate) hash: String,
     pub(crate) chunks: Vec<String>,
     pub(crate) bytes_read: Vec<usize>,
+    pub(crate) parity_chunks: usize,
 }
 
 impl Document {
-    pub fn new(filename: String, hash: String, chunks: Vec<String>, bytes_read: Vec<usize>) -> Self {
+    pub fn new(filename: String, hash: String, chunks: Vec<String>, bytes_read: Vec<usize>, parity_chunks: usize) -> Self {
         Document {
             filename,
             hash,
             chunks,
             bytes_read,
+            parity_chunks,
         }
     }
 }
