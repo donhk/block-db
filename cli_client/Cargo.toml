@@ -16,6 +16,7 @@ tokio = { version = "1.0", features = ["macros", "rt-multi-thread"] }
 rustyline = "11.0.0"
 prettytable-rs = "^0.10"
 chrono = "0.4.19"
+sha2 = "0.9.5"
 
 [build-dependencies]
 tonic-build = "0.7"

@@ -20,7 +20,7 @@ impl FileTransferService {
 impl FileTransfer for FileTransferService {
     async fn send_message(&self, request: Request<MessageRequest>)
                           -> Result<Response<MessageResponse>, Status> {
-        println!("Got a request {:?}", request.metadata());
+        println!("Received a message");
         let req = request.into_inner();
         println!("{} bytes", req.payload.len());
         let uuid = Uuid::new_v4();
@@ -36,7 +36,7 @@ impl FileTransfer for FileTransferService {
 
     async fn receive_message(&self, request: Request<MessageReadRequest>)
                              -> Result<Response<MessageReadResponse>, Status> {
-        println!("Got a request {:?}", request.metadata());
+        println!("Sending a message");
         let req = request.into_inner();
         let id = req.message_id;
         let file = self.storage.as_str().to_owned() + "/" + id.as_str();

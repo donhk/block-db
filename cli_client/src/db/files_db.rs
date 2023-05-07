@@ -1,13 +1,15 @@
 #[derive(Clone)]
 pub struct Document {
     pub(crate) filename: String,
+    pub(crate) hash: String,
     pub(crate) chunks: Vec<String>,
 }
 
 impl Document {
-    pub fn new(filename: String, chunks: Vec<String>) -> Self {
+    pub fn new(filename: String, hash: String, chunks: Vec<String>) -> Self {
         Document {
             filename,
+            hash,
             chunks,
         }
     }
