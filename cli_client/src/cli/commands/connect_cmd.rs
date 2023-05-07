@@ -23,5 +23,5 @@ pub fn connect(url: &str) {
         return;
     }
     println!("{}{}", "Connected!".green(), emojis::get("🐕").unwrap());
-    client_state::set_client_conn(result.unwrap());
+    client_state::set_client_conn(server.to_string());
 }

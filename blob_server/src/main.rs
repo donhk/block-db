@@ -15,9 +15,9 @@ pub struct FileTransferService {}
 impl FileTransfer for FileTransferService {
     async fn send_message(&self, request: Request<MessageRequest>)
                           -> Result<Response<MessageResponse>, Status> {
-        println!("Got a request: {:?}", request);
+        println!("Got a request {:?}",request.metadata());
         let req = request.into_inner();
-        println!("{}", String::from_utf8(req.payload).unwrap());
+        println!("{} bytes", req.payload.len());
         let reply = MessageResponse {
             successful: true,
             message_id: Uuid::new_v4().to_string(),
@@ -29,7 +29,7 @@ impl FileTransfer for FileTransferService {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let addr = "[::1]:3000".parse()?;
+    let addr = "[::1]:50051".parse()?;
     println!("listening on: http://{}", addr);
     let transfer_service = FileTransferService::default();
     Server::builder().add_service(FileTransferServer::new(transfer_service))
