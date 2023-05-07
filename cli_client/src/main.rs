@@ -18,11 +18,15 @@ mod cli {
 
 mod utils {
     pub mod app_state;
+    pub mod file_utils;
 }
 
 use crate::term::terminal::start_terminal;
 use crate::term::terminal::init_app;
 
+pub mod network {
+    tonic::include_proto!("network");
+}
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     init_app();

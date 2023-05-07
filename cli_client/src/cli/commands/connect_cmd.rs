@@ -1,11 +1,8 @@
 use tokio::runtime::Runtime;
-use network::file_transfer_client::FileTransferClient;
 use crate::utils::app_state::client_state;
 use colored::*;
+use crate::network::file_transfer_client::FileTransferClient;
 
-pub mod network {
-    tonic::include_proto!("network");
-}
 
 ///
 /// Initializes the connection to a given server

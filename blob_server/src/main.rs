@@ -1,7 +1,8 @@
-use tonic::{transport::Server, Request, Response, Status, IntoRequest};
+use tonic::{transport::Server, Request, Response, Status};
 
 use network::file_transfer_server::{FileTransfer, FileTransferServer};
 use network::{MessageRequest, MessageResponse};
+use uuid::Uuid;
 
 pub mod network {
     tonic::include_proto!("network");
@@ -19,7 +20,7 @@ impl FileTransfer for FileTransferService {
         println!("{}", String::from_utf8(req.payload).unwrap());
         let reply = MessageResponse {
             successful: true,
-            message_id: "abc123".to_string(),
+            message_id: Uuid::new_v4().to_string(),
         };
 
         return Ok(Response::new(reply));
