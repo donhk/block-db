@@ -23,13 +23,13 @@ pub fn upload_file(raw_cmd: &str) {
         println!("Provide a directory!");
         return;
     }
+    if client_state::get_client_conn().is_none() {
+        println!("Connect to a server first!");
+        return;
+    }
     let file_location = cmd_parts.get(1).unwrap();
     if !is_file_readable(file_location) {
         println!("Provide a readable file!");
-        return;
-    }
-    if client_state::get_client_conn().is_none() {
-        println!("Connect to a server first!");
         return;
     }
     // use 1MB chunk size

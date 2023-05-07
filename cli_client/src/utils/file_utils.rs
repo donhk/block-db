@@ -5,7 +5,22 @@ use std::io::{self, Read, Seek, SeekFrom};
 
 pub fn is_file_readable(filename: &str) -> bool {
     let path = Path::new(filename);
-    path.exists() && path.is_file() && path.metadata().map(|md| md.permissions().readonly()).unwrap_or(true)
+    if !path.exists() {
+        println!("Path {} does not exist", filename);
+        return false;
+    }
+    if !path.is_file() {
+        println!("File {} does not exist", filename);
+        return false;
+    }
+    if let Ok(_file) = File::open(path) {
+        // File was successfully opened, so it can be read
+        true
+    } else {
+        println!("File {} cannot be read", filename);
+        // File could not be opened, so it cannot be read
+        false
+    }
 }
 
 pub fn read_file_chunks(filepath: &str, chunk_size: usize, chunk_index: usize) -> io::Result<Vec<u8>> {
