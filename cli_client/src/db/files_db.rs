@@ -3,14 +3,16 @@ pub struct Document {
     pub(crate) filename: String,
     pub(crate) hash: String,
     pub(crate) chunks: Vec<String>,
+    pub(crate) bytes_read: Vec<usize>,
 }
 
 impl Document {
-    pub fn new(filename: String, hash: String, chunks: Vec<String>) -> Self {
+    pub fn new(filename: String, hash: String, chunks: Vec<String>, bytes_read: Vec<usize>) -> Self {
         Document {
             filename,
             hash,
             chunks,
+            bytes_read,
         }
     }
 }

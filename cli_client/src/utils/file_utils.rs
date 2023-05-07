@@ -24,23 +24,20 @@ pub fn is_file_readable(filename: &str) -> bool {
     }
 }
 
-pub fn read_file_chunks(filepath: &str, chunk_size: usize, chunk_index: usize) -> io::Result<Vec<u8>> {
-    let mut file = File::open(filepath)?;
-    let file_size = file.metadata()?.len();
+pub fn read_file_chunks(filepath: &str, chunk_size: usize, chunk_index: usize) -> (io::Result<Vec<u8>>, usize) {
+    let mut file = File::open(filepath).expect("Error opening file");
+    let file_size = file.metadata().expect("Cannot get file size").len();
     let num_chunks = (file_size as usize + chunk_size - 1) / chunk_size;
 
     if chunk_index >= num_chunks {
-        return Err(io::Error::new(io::ErrorKind::InvalidInput, "chunk index out of range"));
+        return (Err(io::Error::new(io::ErrorKind::InvalidInput, "chunk index out of range")), 0);
     }
 
     let mut chunk = vec![0u8; chunk_size];
     let start_pos = (chunk_index * chunk_size) as u64;
-    file.seek(SeekFrom::Start(start_pos))?;
-    let bytes_read = file.read(&mut chunk)?;
-    if bytes_read < chunk_size {
-        chunk.resize(bytes_read, 0);
-    }
-    return Ok(chunk);
+    file.seek(SeekFrom::Start(start_pos)).expect("Error during seek");
+    let bytes_read = file.read(&mut chunk).expect("Cannot read");
+    return (Ok(chunk), bytes_read);
 }
 
 pub fn get_num_chunks(file_path: &str, chunk_size: usize) -> usize {

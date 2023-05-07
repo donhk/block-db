@@ -7,6 +7,8 @@ use crate::network::{MessageReadRequest, MessageReadResponse};
 use crate::utils::app_state::client_state;
 use crate::utils::file_utils::hash_file;
 
+use reed_solomon_erasure::galois_8::ReedSolomon;
+
 pub fn download_file(raw_cmd: &str) {
     let cmd_parts = raw_cmd.split_whitespace().collect::<Vec<&str>>();
     if cmd_parts.len() == 1 {
@@ -20,21 +22,41 @@ pub fn download_file(raw_cmd: &str) {
         println!("{}", "Invalid document name '{}'".red());
         return;
     }
-    let doc = doc.unwrap();
-    let mut file = File::create(target_file).unwrap();
-    for chunk in doc.chunks {
+    let document = doc.unwrap();
+
+    let parity = 2;
+    let number_of_chunks = document.chunks.len() - parity;
+    //define shards and parity shards
+    let r = ReedSolomon::new(number_of_chunks, parity).unwrap();
+    let mut shards: Vec<Option<Vec<u8>>> = Vec::new();
+    for chunk_index in 0..document.chunks.len() {
+        let chunk_id = document.chunks.get(chunk_index).unwrap();
         tokio::runtime::Runtime::new().unwrap().block_on(async {
-            let response = get_data(chunk.clone()).await;
+            let response = get_data(chunk_id.clone()).await;
             if !response.successful {
-                println!("Failed chunk: {}", chunk);
-                return;
+                println!("Missing chunk: {}", chunk_index);
+                shards.push(None);
+            } else {
+                shards.push(Some(response.payload));
             }
-            file.write(&response.payload).expect("Error writing file");
         });
     }
+
+    r.reconstruct(&mut shards).unwrap();
+    let result: Vec<_> = shards.clone().into_iter().filter_map(|x| x).collect();
+
+    let mut file = File::create(target_file).unwrap();
+    for id in 0..result.len() - (parity) {
+        let shard = shards.get(id).unwrap().clone();
+        let mut bytes = shard.unwrap();
+        let num_of_bytes = document.bytes_read.get(id).unwrap();
+        bytes.resize(*num_of_bytes, 0);
+        println!("Getting {} size {} bytes", id, bytes.len());
+        file.write(&bytes).expect("Error writing file");
+    }
     let new_hash = hash_file(target_file).unwrap();
-    if doc.hash != new_hash {
-        println!("{} original: {} new: {}", "The file is corrupted".red(), doc.hash, new_hash);
+    if document.hash != new_hash {
+        println!("{} original: {} new: {}", "The file is corrupted".red(), document.hash, new_hash);
     }
 }
 

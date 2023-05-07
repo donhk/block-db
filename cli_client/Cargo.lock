@@ -181,6 +181,7 @@ dependencies = [
  "emojis",
  "prettytable-rs",
  "prost",
+ "reed-solomon-erasure",
  "rustyline",
  "sha2",
  "strum",
@@ -1091,6 +1092,15 @@ dependencies = [
  "getrandom",
  "redox_syscall 0.2.16",
  "thiserror",
+]
+
+[[package]]
+name = "reed-solomon-erasure"
+version = "4.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a415a013dd7c5d4221382329a5a3482566da675737494935cbbbcdec04662f9d"
+dependencies = [
+ "smallvec",
 ]
 
 [[package]]
