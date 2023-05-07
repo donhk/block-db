@@ -3,6 +3,7 @@ package network;
 
 service FileTransfer  {
   rpc SendMessage (MessageRequest) returns (MessageResponse);
+  rpc ReceiveMessage (MessageReadRequest) returns (MessageReadResponse);
 }
 
 message MessageRequest {
@@ -12,4 +13,13 @@ message MessageRequest {
 message MessageResponse {
   bool   successful = 1;
   string message_id = 2;
+}
+
+message MessageReadRequest {
+  string message_id = 1;
+}
+
+message MessageReadResponse {
+  bool   successful = 1;
+  bytes payload = 2;
 }

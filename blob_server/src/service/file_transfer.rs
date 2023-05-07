@@ -1,9 +1,9 @@
 use std::net::SocketAddr;
 use tonic::{transport::Server, Request, Response, Status};
 use uuid::Uuid;
-use crate::fs::io::write_bytes_to_file;
+use crate::fs::io::{read_file_bytes, write_bytes_to_file};
 use crate::network::file_transfer_server::{FileTransfer, FileTransferServer};
-use crate::network::{MessageRequest, MessageResponse};
+use crate::network::{MessageRequest, MessageResponse, MessageReadRequest, MessageReadResponse};
 
 #[derive(Debug, Default)]
 pub struct FileTransferService {
@@ -18,7 +18,8 @@ impl FileTransferService {
 
 #[tonic::async_trait]
 impl FileTransfer for FileTransferService {
-    async fn send_message(&self, request: Request<MessageRequest>) -> Result<Response<MessageResponse>, Status> {
+    async fn send_message(&self, request: Request<MessageRequest>)
+                          -> Result<Response<MessageResponse>, Status> {
         println!("Got a request {:?}", request.metadata());
         let req = request.into_inner();
         println!("{} bytes", req.payload.len());
@@ -30,6 +31,20 @@ impl FileTransfer for FileTransferService {
             message_id: uuid.to_string(),
         };
 
+        return Ok(Response::new(reply));
+    }
+
+    async fn receive_message(&self, request: Request<MessageReadRequest>)
+                             -> Result<Response<MessageReadResponse>, Status> {
+        println!("Got a request {:?}", request.metadata());
+        let req = request.into_inner();
+        let id = req.message_id;
+        let file = self.storage.as_str().to_owned() + "/" + id.as_str();
+        let payload = read_file_bytes(file.as_str());
+        let reply = MessageReadResponse {
+            successful: payload.is_ok(),
+            payload: payload.unwrap_or_default(),
+        };
         return Ok(Response::new(reply));
     }
 }

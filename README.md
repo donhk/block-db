@@ -1,6 +1,6 @@
 ## Store DB
 
-This repo contains a client server app that allows storing documents into a database.
+client server app similar to ftp made with rust but with EC and emojis
 
 ### Pre-reqs
 
@@ -8,17 +8,16 @@ This repo contains a client server app that allows storing documents into a data
 sudo apt install -y cmake
 ```
 
+### Server
+
+```bash
+cd blob_server
+cargo run
+```
+
 ### Client
 
 ```shell
-todo
-```
-
-### Server
-
-### Compilation
-
-```bash
 cd cli_client
 cargo run
 ```
