@@ -22,7 +22,6 @@ impl FileTransfer for FileTransferService {
                           -> Result<Response<MessageResponse>, Status> {
         println!("Received a message");
         let req = request.into_inner();
-        println!("{} bytes", req.payload.len());
         let uuid = Uuid::new_v4();
         let file = self.storage.as_str().to_owned() + "/" + uuid.to_string().as_str();
         let result = write_bytes_to_file(&req.payload, file.as_str());

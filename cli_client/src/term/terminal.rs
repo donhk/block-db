@@ -66,8 +66,8 @@ pub fn start_terminal() {
                 }
             }
             Err(ReadlineError::Interrupted) => {
-                println!("CTRL-C");
-                break;
+                println!("CTRL-C, use exit command to get out");
+                continue;
             }
             Err(ReadlineError::Eof) => {
                 println!("CTRL-D");
