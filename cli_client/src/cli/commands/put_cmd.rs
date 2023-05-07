@@ -1,19 +1,18 @@
+use crate::db::files_db::{Document, documents_db};
 use crate::network::file_transfer_client::FileTransferClient;
-use crate::network::MessageRequest;
+use crate::network::{MessageRequest, MessageResponse};
 use crate::utils::app_state::client_state;
 use crate::utils::file_utils::{get_num_chunks, is_file_readable, read_file_chunks};
 
-fn send_data(bytes: Vec<u8>, server_url: &String) {
-    tokio::runtime::Runtime::new().unwrap().block_on(async {
-        let mut client = FileTransferClient::connect(server_url.to_string()).await.unwrap();
-        let request = tonic::Request::new(
-            MessageRequest {
-                payload: bytes,
-            }
-        );
-        let response = client.send_message(request).await.unwrap();
-        println!("RESPONSE={:?}", response);
-    });
+async fn send_data(bytes: Vec<u8>, server_url: &String) -> MessageResponse {
+    let mut client = FileTransferClient::connect(server_url.to_string()).await.unwrap();
+    let request = tonic::Request::new(
+        MessageRequest {
+            payload: bytes,
+        }
+    );
+    let output = client.send_message(request).await;
+    output.unwrap().into_inner()
 }
 
 pub fn upload_file(raw_cmd: &str) {
@@ -35,13 +34,22 @@ pub fn upload_file(raw_cmd: &str) {
     let chunk_size: usize = 1024 * 1024;
     let number_of_chunks = get_num_chunks(file_location, chunk_size);
     let server_url = client_state::get_client_conn().as_ref().unwrap();
+    let mut message_ids: Vec<String> = Vec::new();
     for chunk_index in 0..number_of_chunks {
         let chunk = read_file_chunks(file_location, chunk_size, chunk_index);
         if chunk.is_err() {
             println!("Error reading chunk {}", chunk_index);
             return;
         }
-        send_data(chunk.unwrap(), server_url);
+        let result = send_data(chunk.unwrap(), server_url);
+        tokio::runtime::Runtime::new().unwrap().block_on(async {
+            tokio::select! {
+            val = result => {
+                message_ids.push(val.message_id);
+            }
+        }
+        });
     }
+    documents_db::insert(Document::new(file_location.to_string(), message_ids));
 }
 

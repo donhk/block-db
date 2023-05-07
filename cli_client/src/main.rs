@@ -28,6 +28,10 @@ pub mod network {
     tonic::include_proto!("network");
 }
 
+pub mod db {
+    pub mod files_db;
+}
+
 fn main() {
     init_app();
     start_terminal();
