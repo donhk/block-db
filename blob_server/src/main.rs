@@ -1,40 +1,29 @@
-use tonic::{transport::Server, Request, Response, Status};
-
-use network::file_transfer_server::{FileTransfer, FileTransferServer};
-use network::{MessageRequest, MessageResponse};
-use uuid::Uuid;
+use std::env;
+use crate::service::file_transfer::start_server;
 
 pub mod network {
     tonic::include_proto!("network");
 }
 
-#[derive(Debug, Default)]
-pub struct FileTransferService {}
-
-#[tonic::async_trait]
-impl FileTransfer for FileTransferService {
-    async fn send_message(&self, request: Request<MessageRequest>)
-                          -> Result<Response<MessageResponse>, Status> {
-        println!("Got a request {:?}",request.metadata());
-        let req = request.into_inner();
-        println!("{} bytes", req.payload.len());
-        let reply = MessageResponse {
-            successful: true,
-            message_id: Uuid::new_v4().to_string(),
-        };
-
-        return Ok(Response::new(reply));
-    }
+mod service {
+    pub mod file_transfer;
 }
+
+mod fs {
+    pub mod io;
+}
+
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let addr = "[::1]:50051".parse()?;
+    let workspace = env::current_dir().unwrap().display().to_string();
+    let storage = workspace + "/.storage";
     println!("listening on: http://{}", addr);
-    let transfer_service = FileTransferService::default();
-    Server::builder().add_service(FileTransferServer::new(transfer_service))
-        .serve(addr)
-        .await?;
-
+    println!("storage dir:  {}", storage);
+    let future = start_server(addr, storage);
+    tokio::select! {
+     _ = future => {}
+    }
     Ok(())
 }
