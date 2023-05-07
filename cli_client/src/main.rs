@@ -28,8 +28,7 @@ pub mod network {
     tonic::include_proto!("network");
 }
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() {
     init_app();
     start_terminal();
-    Ok(())
 }

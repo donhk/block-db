@@ -18,7 +18,7 @@ pub fn init_app() {
 
 pub fn start_terminal() {
     let bulb = emojis::get("💡").unwrap();
-    println!("{}{}", bulb.as_str(), "Welcome to Blob Vader".yellow());
+    println!("{}{}", "Welcome to Blob Vader".yellow(), bulb.as_str());
     loop {
         print!("{} ", "blob>".cyan());
         io::stdout().flush().expect("Error flushing output buffer");
