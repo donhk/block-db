@@ -20,7 +20,7 @@ pub fn init_app() {
 
 pub fn start_terminal() {
     let bulb = emojis::get("💡").unwrap();
-    println!("{}{}", "Welcome to Blob Vader".yellow(), bulb.as_str());
+    println!("{} {}", "Welcome to Document-Vader".yellow(), bulb.as_str());
     let mut rl = DefaultEditor::new().unwrap();
     rl.set_max_history_size(100).expect("Error setting history size");
     loop {
@@ -29,6 +29,9 @@ pub fn start_terminal() {
             Ok(line) => {
                 rl.add_history_entry(line.as_str()).expect("error saving history");
                 let cmd = line.trim();
+                if cmd.is_empty() {
+                    continue;
+                }
                 let cmd_lower = cmd.to_lowercase();
                 match cmd_lower {
                     s if s.starts_with(Cmd::EXIT.to_string().as_str()) => {

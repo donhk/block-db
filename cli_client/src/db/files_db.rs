@@ -1,7 +1,7 @@
 #[derive(Clone)]
 pub struct Document {
-    filename: String,
-    chunks: Vec<String>,
+    pub(crate) filename: String,
+    pub(crate) chunks: Vec<String>,
 }
 
 impl Document {
@@ -29,6 +29,12 @@ pub mod documents_db {
     pub fn get(filename: &str) -> Option<Document> {
         unsafe {
             DOCUMENTS.as_ref()?.get(filename).cloned()
+        }
+    }
+
+    pub fn get_map() -> Option<HashMap<String, Document>> {
+        unsafe {
+            DOCUMENTS.clone()
         }
     }
 }

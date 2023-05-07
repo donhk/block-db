@@ -1,8 +1,10 @@
+use colored::Colorize;
 use crate::db::files_db::{Document, documents_db};
 use crate::network::file_transfer_client::FileTransferClient;
 use crate::network::{MessageRequest, MessageResponse};
 use crate::utils::app_state::client_state;
 use crate::utils::file_utils::{get_num_chunks, is_file_readable, read_file_chunks};
+use std::time::{SystemTime};
 
 async fn send_data(bytes: Vec<u8>, server_url: &String) -> MessageResponse {
     let mut client = FileTransferClient::connect(server_url.to_string()).await.unwrap();
@@ -30,6 +32,7 @@ pub fn upload_file(raw_cmd: &str) {
         println!("Provide a readable file!");
         return;
     }
+    let start = SystemTime::now();
     // use 1MB chunk size
     let chunk_size: usize = 1024 * 1024;
     let number_of_chunks = get_num_chunks(file_location, chunk_size);
@@ -50,6 +53,10 @@ pub fn upload_file(raw_cmd: &str) {
         }
         });
     }
+    let end = SystemTime::now();
+    let duration = end.duration_since(start)
+        .unwrap_or_else(|e| e.duration());
     documents_db::insert(Document::new(file_location.to_string(), message_ids));
+    println!("{} {}ms", "Saved".blue(), duration.as_millis().to_string().purple());
 }
 
