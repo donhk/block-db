@@ -4,6 +4,7 @@ mod term {
 
 mod cli {
     pub mod cmds;
+    pub mod cmd;
 
     pub(crate) mod commands {
         pub mod help_cmd;

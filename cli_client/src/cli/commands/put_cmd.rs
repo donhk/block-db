@@ -7,9 +7,16 @@ pub mod put {
     use crate::utils::file_utils::{get_num_chunks, hash_file, is_file_readable, read_file_chunks};
     use std::time::{SystemTime};
     use reed_solomon_erasure::galois_8::ReedSolomon;
+    use crate::cli::cmd::CmdTrait;
 
     pub struct PutCmd {
         pub chunk_size: usize,
+    }
+
+    impl CmdTrait for PutCmd {
+        fn execute(&self, raw_cmd: &str) {
+            self.upload_file(raw_cmd);
+        }
     }
 
     impl PutCmd {

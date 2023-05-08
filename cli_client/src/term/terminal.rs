@@ -8,6 +8,7 @@ use std::env;
 use rustyline::{DefaultEditor};
 use rustyline::config::Configurer;
 use rustyline::error::ReadlineError;
+use crate::cli::cmd::CmdTrait;
 use crate::cli::cmds::Cmd;
 use crate::cli::commands::get_cmd::download_file;
 use crate::cli::commands::list_cmd::list;
@@ -43,7 +44,7 @@ pub fn start_terminal() {
                     }
                     s if s.starts_with(Cmd::PUT.to_string().as_str()) => {
                         let put_cmd = PutCmd::new();
-                        put_cmd.upload_file(&cmd);
+                        put_cmd.execute(&cmd);
                     }
                     s if s.starts_with(Cmd::GET.to_string().as_str()) => {
                         download_file(&cmd);
