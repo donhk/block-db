@@ -11,7 +11,7 @@ use rustyline::error::ReadlineError;
 use crate::cli::cmds::Cmd;
 use crate::cli::commands::get_cmd::download_file;
 use crate::cli::commands::list_cmd::list;
-use crate::cli::commands::put_cmd::upload_file;
+use crate::cli::commands::put_cmd::put::PutCmd;
 
 pub fn init_app() {
     let workspace = env::current_dir().unwrap().display().to_string();
@@ -42,7 +42,8 @@ pub fn start_terminal() {
                         connect(&cmd);
                     }
                     s if s.starts_with(Cmd::PUT.to_string().as_str()) => {
-                        upload_file(&cmd);
+                        let put_cmd = PutCmd::new();
+                        put_cmd.upload_file(&cmd);
                     }
                     s if s.starts_with(Cmd::GET.to_string().as_str()) => {
                         download_file(&cmd);
