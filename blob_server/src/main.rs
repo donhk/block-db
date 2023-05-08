@@ -13,10 +13,9 @@ mod fs {
     pub mod io;
 }
 
-
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let addr = "[::1]:50051".parse()?;
+    let addr = "0.0.0.0:50051".parse()?;
     let workspace = env::current_dir().unwrap().display().to_string();
     let storage = workspace + "/.storage";
     std::fs::create_dir_all(storage.as_str())?;

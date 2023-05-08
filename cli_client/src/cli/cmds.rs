@@ -19,12 +19,12 @@ impl fmt::Display for Cmd {
         match self {
             Cmd::LS => write!(f, "ls"),
             Cmd::EXIT => write!(f, "exit"),
-            Cmd::CONNECT => write!(f, "connect"),
-            Cmd::PUT => write!(f, "put"),
-            Cmd::GET => write!(f, "get"),
+            Cmd::CONNECT => write!(f, "connect <addr>"),
+            Cmd::PUT => write!(f, "put <file_name>"),
+            Cmd::GET => write!(f, "get <file_name> <output_location>"),
             Cmd::HELP => write!(f, "help"),
             Cmd::STATUS => write!(f, "status"),
-            Cmd::CD => write!(f, "cd"),
+            Cmd::CD => write!(f, "cd <location>"),
         }
     }
 }
