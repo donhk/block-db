@@ -1,5 +1,4 @@
 use crate::cli::commands::help_cmd::print_help;
-use crate::cli::commands::connect_cmd::connect;
 use crate::cli::commands::status_cmd::print_status;
 use colored::*;
 use crate::utils::app_state::client_state;
@@ -10,6 +9,7 @@ use rustyline::error::ReadlineError;
 use crate::cli::cmd::CmdTrait;
 use crate::cli::cmds::Cmd;
 use crate::cli::commands::cd::vader_cmds::CdCmd;
+use crate::cli::commands::connect::vader_cmds::ConnectCmd;
 use crate::cli::commands::put::vader_cmds::PutCmd;
 use crate::cli::commands::get_cmd::download_file;
 use crate::cli::commands::list_cmd::list;
@@ -40,7 +40,8 @@ pub fn start_terminal() {
                         break;
                     }
                     s if s.starts_with(Cmd::CONNECT.to_string().as_str()) => {
-                        connect(&cmd);
+                        let connect = ConnectCmd::new();
+                        connect.execute(&cmd);
                     }
                     s if s.starts_with(Cmd::PUT.to_string().as_str()) => {
                         let put_cmd = PutCmd::new();

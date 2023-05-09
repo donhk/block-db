@@ -8,7 +8,7 @@ mod cli {
 
     pub(crate) mod commands {
         pub mod help_cmd;
-        pub mod connect_cmd;
+        pub mod connect;
         pub mod status_cmd;
         pub mod cd;
         pub mod put;
