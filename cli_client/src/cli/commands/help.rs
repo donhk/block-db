@@ -13,7 +13,7 @@ pub mod vader_cmds {
     }
 
     impl CmdTrait for PrintCmd {
-        fn execute(&self, _raw_cmd: &str) {
+        fn execute(&self) {
             for cmd in Cmd::iter() {
                 let help = cmd.help();
                 println!("{} {}", cmd.emoji(), help.green());

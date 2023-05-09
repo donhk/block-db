@@ -40,32 +40,32 @@ pub fn start_terminal() {
                 }
                 match cmd_lower {
                     s if s.starts_with(Cmd::CONNECT.to_string().as_str()) => {
-                        let connect = ConnectCmd::new();
-                        connect.execute(&cmd);
+                        let connect = ConnectCmd::new(&cmd);
+                        connect.execute();
                     }
                     s if s.starts_with(Cmd::PUT.to_string().as_str()) => {
-                        let put_cmd = PutCmd::new();
-                        put_cmd.execute(&cmd);
+                        let put = PutCmd::new(&cmd);
+                        put.execute();
                     }
                     s if s.starts_with(Cmd::GET.to_string().as_str()) => {
-                        let get = GetCmd::new();
-                        get.execute(&cmd);
+                        let get = GetCmd::new(&cmd);
+                        get.execute();
                     }
                     s if s.starts_with(Cmd::LS.to_string().as_str()) => {
                         let list = ListCmd::new();
-                        list.execute(&cmd);
+                        list.execute();
                     }
                     s if s.starts_with(Cmd::HELP.to_string().as_str()) => {
                         let help = PrintCmd::new();
-                        help.execute(&cmd);
+                        help.execute();
                     }
                     s if s.starts_with(Cmd::STATUS.to_string().as_str()) => {
                         let status = StatusCmd::new();
-                        status.execute(&cmd);
+                        status.execute();
                     }
                     s if s.starts_with(Cmd::CD.to_string().as_str()) => {
-                        let cd = CdCmd::new();
-                        cd.execute(&cmd);
+                        let cd = CdCmd::new(&cmd);
+                        cd.execute();
                     }
                     _ => {
                         let bomb = emojis::get("💣").unwrap();

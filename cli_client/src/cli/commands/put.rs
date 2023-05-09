@@ -9,24 +9,26 @@ pub mod vader_cmds {
     use reed_solomon_erasure::galois_8::ReedSolomon;
     use crate::cli::cmd::CmdTrait;
 
-    pub struct PutCmd {
-        pub chunk_size: usize,
+    pub struct PutCmd<'a> {
+        chunk_size: usize,
+        raw_cmd: &'a str,
     }
 
-    impl CmdTrait for PutCmd {
-        fn execute(&self, raw_cmd: &str) {
-            self.upload_file(raw_cmd);
+    impl<'a> CmdTrait for PutCmd<'a> {
+        fn execute(&self) {
+            self.upload_file(self.raw_cmd);
         }
     }
 
-    impl PutCmd {
-        pub fn new() -> PutCmd {
+    impl<'a> PutCmd<'a> {
+        pub fn new(raw_cmd: &'a str) -> Self {
             PutCmd {
                 chunk_size: 1024 * 1024,
+                raw_cmd,
             }
         }
 
-        fn validate_command<'a>(&self, raw_cmd: &'a str) -> (bool, &'a str) {
+        fn validate_command(&self, raw_cmd: &'a str) -> (bool, &'a str) {
             let cmd_parts = raw_cmd.split_whitespace().collect::<Vec<&str>>();
             if cmd_parts.get(1).is_none() {
                 println!("Provide a directory!");
@@ -73,8 +75,7 @@ pub mod vader_cmds {
 
         fn read_file_and_split(&self, file_location: &str) -> (bool, String, Vec<String>, Vec<usize>, usize) {
             // use 1MB chunk size
-            let chunk_size: usize = 1024 * 1024;
-            let number_of_chunks = get_num_chunks(file_location, chunk_size);
+            let number_of_chunks = get_num_chunks(file_location, self.chunk_size);
             let parity = std::cmp::max(2, number_of_chunks / 3);
             //define shards and parity shards
             let r = ReedSolomon::new(number_of_chunks, parity).unwrap();
@@ -83,7 +84,7 @@ pub mod vader_cmds {
             let mut all_bytes_read: Vec<usize> = Vec::new();
             //read data to encode it
             for chunk_index in 0..number_of_chunks {
-                let (chunk, bytes_read) = read_file_chunks(file_location, chunk_size, chunk_index);
+                let (chunk, bytes_read) = read_file_chunks(file_location, self.chunk_size, chunk_index);
                 if chunk.is_err() {
                     println!("Error reading chunk {}", chunk_index);
                     return (false, "".to_string(), Vec::default(), Vec::default(), 0);
@@ -92,7 +93,7 @@ pub mod vader_cmds {
                 all_bytes_read.push(bytes_read);
             }
             for _ in 0..parity {
-                master_copy.push(vec![0; chunk_size]);
+                master_copy.push(vec![0; self.chunk_size]);
                 all_bytes_read.push(0);
             }
             for ma in all_bytes_read.iter() {

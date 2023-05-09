@@ -12,11 +12,15 @@ pub mod vader_cmds {
     use reed_solomon_erasure::galois_8::ReedSolomon;
     use crate::cli::cmd::CmdTrait;
 
-    pub struct GetCmd {}
+    pub struct GetCmd<'a> {
+        raw_cmd: &'a str,
+    }
 
-    impl GetCmd {
-        pub fn new() -> GetCmd {
-            GetCmd {}
+    impl<'a> GetCmd<'a> {
+        pub fn new(raw_cmd: &'a str) -> Self {
+            GetCmd {
+                raw_cmd
+            }
         }
 
         fn read_chunks(&self, document: &Document, target_file: &str) -> String {
@@ -93,9 +97,9 @@ pub mod vader_cmds {
         }
     }
 
-    impl CmdTrait for GetCmd {
-        fn execute(&self, raw_cmd: &str) {
-            self.download_file(raw_cmd);
+    impl<'a> CmdTrait for GetCmd<'a> {
+        fn execute(&self) {
+            self.download_file(self.raw_cmd);
         }
     }
 }

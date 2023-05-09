@@ -5,20 +5,24 @@ pub mod vader_cmds {
     use colored::*;
     use crate::cli::cmd::CmdTrait;
 
-    pub struct CdCmd {}
+    pub struct CdCmd<'a> {
+        raw_cmd: &'a str,
+    }
 
-    impl CmdTrait for CdCmd {
-        fn execute(&self, raw_cmd: &str) {
-            self.change_dir(raw_cmd);
+    impl<'a> CmdTrait for CdCmd<'a> {
+        fn execute(&self) {
+            self.change_dir();
         }
     }
 
-    impl CdCmd {
-        pub fn new() -> CdCmd {
-            CdCmd {}
+    impl<'a> CdCmd<'a> {
+        pub fn new(raw_cmd: &'a str) -> Self {
+            CdCmd {
+                raw_cmd
+            }
         }
-        fn change_dir(&self, raw_cmd: &str) {
-            let cmd_parts = raw_cmd.split_whitespace().collect::<Vec<&str>>();
+        fn change_dir(&self) {
+            let cmd_parts = self.raw_cmd.split_whitespace().collect::<Vec<&str>>();
             if cmd_parts.get(1).is_none() {
                 println!("Provide a directory!");
                 return;

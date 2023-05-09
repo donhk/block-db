@@ -15,16 +15,15 @@ pub mod vader_cmds {
     }
 
     impl CmdTrait for ListCmd {
-        fn execute(&self, raw_cmd: &str) {
+        fn execute(&self) {
             // Create the table
             let mut table = Table::new();
             // Add a row per time
             let file = emojis::get("📄").unwrap().as_str();
             let time = emojis::get("⏲️").unwrap().as_str();
-            table.add_row(row![
-        "file_name".to_owned().green().to_string()+file,
-        "created".to_owned().green().to_string()+time
-    ]);
+            let col1 = "file_name".to_owned().green().to_string() + file;
+            let col2 = "created".to_owned().green().to_string() + time;
+            table.add_row(row![col1,col2]);
             let workspace = client_state::get_location().as_ref().unwrap();
             let current_dir = fs::read_dir(workspace).unwrap();
             for entry in current_dir {

@@ -5,25 +5,29 @@ pub mod vader_cmds {
     use crate::cli::cmd::CmdTrait;
     use crate::network::file_transfer_client::FileTransferClient;
 
-    pub struct ConnectCmd {}
+    pub struct ConnectCmd<'a> {
+        raw_cmd: &'a str,
+    }
 
-    impl CmdTrait for ConnectCmd {
-        fn execute(&self, raw_cmd: &str) {
-            self.connect(raw_cmd);
+    impl<'a> CmdTrait for ConnectCmd<'a> {
+        fn execute(&self) {
+            self.connect();
         }
     }
 
-    impl ConnectCmd {
-        pub fn new() -> ConnectCmd {
-            ConnectCmd {}
+    impl<'a> ConnectCmd<'a> {
+        pub fn new(raw_cmd: &'a str) -> Self {
+            ConnectCmd {
+                raw_cmd
+            }
         }
 
         ///
         /// Initializes the connection to a given server
         /// # Arguments
         /// * `url` a url to connect
-        fn connect(&self, url: &str) {
-            let url_parts = url.split_whitespace().collect::<Vec<&str>>();
+        fn connect(&self) {
+            let url_parts = self.raw_cmd.split_whitespace().collect::<Vec<&str>>();
             if url_parts.get(1).is_none() {
                 println!("Provide a server!");
                 return;

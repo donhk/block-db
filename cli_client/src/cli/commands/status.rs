@@ -14,7 +14,7 @@ pub mod vader_cmds {
     }
 
     impl CmdTrait for StatusCmd {
-        fn execute(&self, _raw_cmd: &str) {
+        fn execute(&self) {
             let conn_state = match client_state::get_client_conn().is_none() {
                 true => "No".red(),
                 false => "Yes".green(),
