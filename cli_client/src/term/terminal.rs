@@ -1,4 +1,3 @@
-use crate::cli::commands::status_cmd::print_status;
 use colored::*;
 use crate::utils::app_state::client_state;
 use std::env;
@@ -11,8 +10,9 @@ use crate::cli::commands::cd::vader_cmds::CdCmd;
 use crate::cli::commands::connect::vader_cmds::ConnectCmd;
 use crate::cli::commands::put::vader_cmds::PutCmd;
 use crate::cli::commands::help::vader_cmds::PrintCmd;
-use crate::cli::commands::get_cmd::download_file;
-use crate::cli::commands::list_cmd::list;
+use crate::cli::commands::list::vader_cmds::ListCmd;
+use crate::cli::commands::status::vader_cmds::StatusCmd;
+use crate::cli::commands::get::vader_cmds::GetCmd;
 
 pub fn init_app() {
     let workspace = env::current_dir().unwrap().display().to_string();
@@ -34,11 +34,11 @@ pub fn start_terminal() {
                     continue;
                 }
                 let cmd_lower = cmd.to_lowercase();
+                if cmd_lower == Cmd::EXIT.to_string().as_str() {
+                    println!("Bye Bye!");
+                    break;
+                }
                 match cmd_lower {
-                    s if s.starts_with(Cmd::EXIT.to_string().as_str()) => {
-                        println!("Bye Bye!");
-                        break;
-                    }
                     s if s.starts_with(Cmd::CONNECT.to_string().as_str()) => {
                         let connect = ConnectCmd::new();
                         connect.execute(&cmd);
@@ -48,17 +48,20 @@ pub fn start_terminal() {
                         put_cmd.execute(&cmd);
                     }
                     s if s.starts_with(Cmd::GET.to_string().as_str()) => {
-                        download_file(&cmd);
+                        let get = GetCmd::new();
+                        get.execute(&cmd);
                     }
                     s if s.starts_with(Cmd::LS.to_string().as_str()) => {
-                        list();
+                        let list = ListCmd::new();
+                        list.execute(&cmd);
                     }
                     s if s.starts_with(Cmd::HELP.to_string().as_str()) => {
-                        let print_help = PrintCmd::new();
-                        print_help.execute(&cmd);
+                        let help = PrintCmd::new();
+                        help.execute(&cmd);
                     }
                     s if s.starts_with(Cmd::STATUS.to_string().as_str()) => {
-                        print_status();
+                        let status = StatusCmd::new();
+                        status.execute(&cmd);
                     }
                     s if s.starts_with(Cmd::CD.to_string().as_str()) => {
                         let cd = CdCmd::new();

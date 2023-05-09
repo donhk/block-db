@@ -9,11 +9,11 @@ mod cli {
     pub(crate) mod commands {
         pub mod help;
         pub mod connect;
-        pub mod status_cmd;
+        pub mod status;
         pub mod cd;
         pub mod put;
-        pub mod get_cmd;
-        pub mod list_cmd;
+        pub mod get;
+        pub mod list;
     }
 }
 
