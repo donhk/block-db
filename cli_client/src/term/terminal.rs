@@ -1,4 +1,3 @@
-use crate::cli::commands::help_cmd::print_help;
 use crate::cli::commands::status_cmd::print_status;
 use colored::*;
 use crate::utils::app_state::client_state;
@@ -11,6 +10,7 @@ use crate::cli::cmds::Cmd;
 use crate::cli::commands::cd::vader_cmds::CdCmd;
 use crate::cli::commands::connect::vader_cmds::ConnectCmd;
 use crate::cli::commands::put::vader_cmds::PutCmd;
+use crate::cli::commands::help::vader_cmds::PrintCmd;
 use crate::cli::commands::get_cmd::download_file;
 use crate::cli::commands::list_cmd::list;
 
@@ -54,7 +54,8 @@ pub fn start_terminal() {
                         list();
                     }
                     s if s.starts_with(Cmd::HELP.to_string().as_str()) => {
-                        print_help();
+                        let print_help = PrintCmd::new();
+                        print_help.execute(&cmd);
                     }
                     s if s.starts_with(Cmd::STATUS.to_string().as_str()) => {
                         print_status();
