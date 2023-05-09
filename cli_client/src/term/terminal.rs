@@ -1,7 +1,6 @@
 use crate::cli::commands::help_cmd::print_help;
 use crate::cli::commands::connect_cmd::connect;
 use crate::cli::commands::status_cmd::print_status;
-use crate::cli::commands::cd_cmd::change_dir;
 use colored::*;
 use crate::utils::app_state::client_state;
 use std::env;
@@ -10,9 +9,10 @@ use rustyline::config::Configurer;
 use rustyline::error::ReadlineError;
 use crate::cli::cmd::CmdTrait;
 use crate::cli::cmds::Cmd;
+use crate::cli::commands::cd::vader_cmds::CdCmd;
+use crate::cli::commands::put::vader_cmds::PutCmd;
 use crate::cli::commands::get_cmd::download_file;
 use crate::cli::commands::list_cmd::list;
-use crate::cli::commands::put_cmd::put::PutCmd;
 
 pub fn init_app() {
     let workspace = env::current_dir().unwrap().display().to_string();
@@ -59,7 +59,8 @@ pub fn start_terminal() {
                         print_status();
                     }
                     s if s.starts_with(Cmd::CD.to_string().as_str()) => {
-                        change_dir(&cmd);
+                        let cd = CdCmd::new();
+                        cd.execute(&cmd);
                     }
                     _ => {
                         let bomb = emojis::get("💣").unwrap();

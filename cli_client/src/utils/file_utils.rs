@@ -1,6 +1,7 @@
 use std::fs;
 use std::path::Path;
 use std::fs::File;
+use std::io::Write;
 use std::io::{self, Read, Seek, SeekFrom};
 use sha2::{Sha256, Digest};
 
@@ -60,4 +61,21 @@ pub fn hash_file(filename: &str) -> io::Result<String> {
 
     let hash = hasher.finalize();
     Ok(format!("{:x}", hash))
+}
+
+pub fn is_writable_directory(path: &Path) -> bool {
+    let file_path = path.join("temp.txt");
+    match File::create(&file_path) {
+        Ok(mut file) => {
+            let result = file.write(b"test");
+            match result {
+                Ok(_) => {
+                    let _ = fs::remove_file(&file_path);
+                    true
+                }
+                Err(_) => false,
+            }
+        }
+        Err(_) => false,
+    }
 }

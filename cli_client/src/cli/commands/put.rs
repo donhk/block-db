@@ -1,4 +1,4 @@
-pub mod put {
+pub mod vader_cmds {
     use colored::Colorize;
     use crate::db::files_db::{Document, documents_db};
     use crate::network::file_transfer_client::FileTransferClient;

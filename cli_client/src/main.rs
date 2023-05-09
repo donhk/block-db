@@ -10,8 +10,8 @@ mod cli {
         pub mod help_cmd;
         pub mod connect_cmd;
         pub mod status_cmd;
-        pub mod cd_cmd;
-        pub mod put_cmd;
+        pub mod cd;
+        pub mod put;
         pub mod get_cmd;
         pub mod list_cmd;
     }
