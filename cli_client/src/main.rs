@@ -1,6 +1,4 @@
-mod term {
-    pub mod terminal;
-}
+use crate::term::terminal::term::Terminal;
 
 mod cli {
     pub mod cmds;
@@ -14,6 +12,7 @@ mod cli {
         pub mod put;
         pub mod get;
         pub mod list;
+        pub mod unknown;
     }
 }
 
@@ -22,8 +21,9 @@ mod utils {
     pub mod file_utils;
 }
 
-use crate::term::terminal::start_terminal;
-use crate::term::terminal::init_app;
+mod term {
+    pub mod terminal;
+}
 
 pub mod network {
     tonic::include_proto!("network");
@@ -34,6 +34,7 @@ pub mod db {
 }
 
 fn main() {
-    init_app();
-    start_terminal();
+    let terminal = Terminal::new();
+    terminal.init_app();
+    terminal.start_terminal();
 }
