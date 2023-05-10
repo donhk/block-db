@@ -67,25 +67,25 @@ pub mod term {
         }
 
         fn get_command<'a>(&self, cmd: &'a str) -> Box<dyn CmdTrait + 'a> {
-            if cmd.starts_with(Cmd::CONNECT.to_string().as_str()) {
-                return Box::new(ConnectCmd::new(&cmd));
+            return if cmd.starts_with(Cmd::CONNECT.to_string().as_str()) {
+                Box::new(ConnectCmd::new(&cmd))
             } else if cmd.starts_with(Cmd::PUT.to_string().as_str()) {
                 let command = Box::new(PutCmd::new(&cmd));
-                return command;
+                command
             } else if cmd.starts_with(Cmd::GET.to_string().as_str()) {
                 let command = Box::new(GetCmd::new(&cmd));
-                return command;
+                command
             } else if cmd.starts_with(Cmd::LS.to_string().as_str()) {
-                return Box::new(ListCmd::new());
+                Box::new(ListCmd::new())
             } else if cmd.starts_with(Cmd::HELP.to_string().as_str()) {
-                return Box::new(PrintCmd::new());
+                Box::new(PrintCmd::new())
             } else if cmd.starts_with(Cmd::STATUS.to_string().as_str()) {
-                return Box::new(StatusCmd::new());
+                Box::new(StatusCmd::new())
             } else if cmd.starts_with(Cmd::CD.to_string().as_str()) {
                 let command = Box::new(CdCmd::new(&cmd));
-                return command;
+                command
             } else {
-                return Box::new(UnknownCmd::new(&cmd));
+                Box::new(UnknownCmd::new(&cmd))
             }
         }
     }
