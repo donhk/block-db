@@ -70,11 +70,9 @@ pub mod term {
             return if cmd.starts_with(Cmd::CONNECT.to_string().as_str()) {
                 Box::new(ConnectCmd::new(&cmd))
             } else if cmd.starts_with(Cmd::PUT.to_string().as_str()) {
-                let command = Box::new(PutCmd::new(&cmd));
-                command
+                Box::new(PutCmd::new(&cmd))
             } else if cmd.starts_with(Cmd::GET.to_string().as_str()) {
-                let command = Box::new(GetCmd::new(&cmd));
-                command
+                Box::new(GetCmd::new(&cmd))
             } else if cmd.starts_with(Cmd::LS.to_string().as_str()) {
                 Box::new(ListCmd::new())
             } else if cmd.starts_with(Cmd::HELP.to_string().as_str()) {
@@ -82,11 +80,10 @@ pub mod term {
             } else if cmd.starts_with(Cmd::STATUS.to_string().as_str()) {
                 Box::new(StatusCmd::new())
             } else if cmd.starts_with(Cmd::CD.to_string().as_str()) {
-                let command = Box::new(CdCmd::new(&cmd));
-                command
+                Box::new(CdCmd::new(&cmd))
             } else {
                 Box::new(UnknownCmd::new(&cmd))
-            }
+            };
         }
     }
 }
