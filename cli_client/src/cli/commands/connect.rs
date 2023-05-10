@@ -5,10 +5,6 @@ pub mod vader_cmds {
     use crate::cli::cmd::CmdTrait;
     use crate::network::file_transfer_client::FileTransferClient;
 
-    // We've also added a private field _marker of type
-    // std::marker::PhantomData<&'a ()> to tie the lifetime of 'a to the instance of ConnectCmd.
-    // This is a common trick used to ensure that Rust's borrow checker understands the lifetime
-    // relationships between types.
     pub struct ConnectCmd<'a> {
         raw_cmd: &'a str,
     }
