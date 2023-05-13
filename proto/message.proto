@@ -1,9 +1,12 @@
 syntax = "proto3";
 package network;
 
+import "google/protobuf/timestamp.proto";
+
 service FileTransfer  {
   rpc SendMessage (MessageRequest) returns (MessageResponse);
   rpc ReceiveMessage (MessageReadRequest) returns (MessageReadResponse);
+  rpc NetworkLoad (UploadNetworkRequest) returns (UploadNetworkResponse);
 }
 
 message MessageRequest {
@@ -22,4 +25,12 @@ message MessageReadRequest {
 message MessageReadResponse {
   bool   successful = 1;
   bytes payload = 2;
+}
+
+message UploadNetworkRequest{
+  bytes payload = 1;
+}
+
+message UploadNetworkResponse{
+  google.protobuf.Timestamp arrived = 1;
 }

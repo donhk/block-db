@@ -12,6 +12,7 @@ pub enum Cmd {
     HELP,
     STATUS,
     CD,
+    NET,
 }
 
 impl fmt::Display for Cmd {
@@ -25,6 +26,7 @@ impl fmt::Display for Cmd {
             Cmd::HELP => write!(f, "help"),
             Cmd::STATUS => write!(f, "status"),
             Cmd::CD => write!(f, "cd"),
+            Cmd::NET => write!(f, "network"),
         }
     }
 }
@@ -40,6 +42,7 @@ impl Cmd {
             Cmd::HELP => emojis::get("🤪").unwrap().as_str(),
             Cmd::STATUS => emojis::get("🤓").unwrap().as_str(),
             Cmd::CD => emojis::get("🍇").unwrap().as_str(),
+            Cmd::NET => emojis::get("🧠").unwrap().as_str(),
         }
     }
 }
@@ -55,6 +58,7 @@ impl Cmd {
             Cmd::HELP =>    "help           # shows this message",
             Cmd::STATUS =>  "status         # shows client metadata",
             Cmd::CD =>      "cd <directory> # changes the work directory",
+            Cmd::NET =>     "net <up|down>  # changes the work directory",
         }
     }
 }

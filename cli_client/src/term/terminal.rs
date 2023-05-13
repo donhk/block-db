@@ -14,6 +14,7 @@ pub mod term {
     use crate::cli::commands::list::vader_cmds::ListCmd;
     use crate::cli::commands::status::vader_cmds::StatusCmd;
     use crate::cli::commands::get::vader_cmds::GetCmd;
+    use crate::cli::commands::net::vader_cmds::NetCmd;
     use crate::cli::commands::unknown::vader_cmds::UnknownCmd;
 
     pub struct Terminal {}
@@ -81,7 +82,10 @@ pub mod term {
                 Box::new(StatusCmd::new())
             } else if cmd.starts_with(Cmd::CD.to_string().as_str()) {
                 Box::new(CdCmd::new(&cmd))
-            } else {
+            }else if cmd.starts_with(Cmd::NET.to_string().as_str()) {
+                Box::new(NetCmd::new(&cmd))
+            }
+            else {
                 Box::new(UnknownCmd::new(&cmd))
             };
         }

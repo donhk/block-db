@@ -181,6 +181,7 @@ dependencies = [
  "emojis",
  "prettytable-rs",
  "prost",
+ "rand",
  "reed-solomon-erasure",
  "rustyline",
  "sha2",

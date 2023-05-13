@@ -13,6 +13,7 @@ mod cli {
         pub mod get;
         pub mod list;
         pub mod unknown;
+        pub mod net;
     }
 }
 
